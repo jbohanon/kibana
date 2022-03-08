@@ -10,6 +10,10 @@ import readline from 'readline';
 import { createReadStream, statSync } from 'fs';
 import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import execa from 'execa';
+import { resolve } from 'path';
+
+const ROOT_DIR = resolve(__dirname, '../../../../../..');
 
 export const dirLine$ = (x) => {
   const rl = readline.createInterface({ input: createReadStream(x) });
@@ -25,4 +29,21 @@ export const pathExists = (x) => {
     res = false;
   }
   return res;
+};
+
+export const rmCloudDir = (bucket) => (log) => async (x) => {
+  log.verbose(`\n### bucket: \n\t${bucket}`);
+  log.info('\n### Rm: ', x);
+
+  const params = [
+    '-m',
+    'rm',
+    '-r',
+    `${bucket}${x}`, // eg. gs://elastic-bekitzur-kibana-coverage-live/2020-03-11T00:06:07Z
+    '&',
+  ];
+
+  const { stdout } = await execa('gsutil', params, { cwd: ROOT_DIR });
+
+  console.log(`\n### stdout: \n\t${stdout}`);
 };

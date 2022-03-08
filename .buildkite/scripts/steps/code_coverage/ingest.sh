@@ -5,12 +5,19 @@ set -euo pipefail
 source .buildkite/scripts/common/util.sh
 
 export CODE_COVERAGE=1
-# `-m`: run in parallel
+
+uploadPrefix="gs://elastic-bekitzur-kibana-coverage-live/"
+
+#Note:  `-m` === run in parallel
+
+# List out the data
+#gsutil -m ls -r ${uploadPrefix} # recursive
+
+# Trying w/o -r, supposed to be more efficient...a "flat" listing
+gsutil -m ls "${uploadPrefix}**"
 
 # Truncate Old Data in GCS
-uploadPrefix="gs://elastic-bekitzur-kibana-coverage-live/"
-gsutil ls -r ${uploadPrefix}
-
+# Not ready yet :)
 
 
 

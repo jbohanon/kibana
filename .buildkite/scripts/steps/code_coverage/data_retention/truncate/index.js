@@ -8,7 +8,7 @@
 
 import { run, createFlagError } from '@kbn/dev-utils';
 import { resolve } from 'path';
-import { pathExists, dirLine$ } from './helpers';
+import { pathExists, dirLine$, rmCloudDir } from './helpers';
 
 const flagList = ['bucket', 'dirs_file'];
 const flags = {
@@ -46,18 +46,15 @@ blah
   );
 }
 
-const rmCloudDir = (bucket) => (log) => (x) => {
-  log.verbose(`\n### bucket: \n\t${bucket}`);
-  log.info('\n### Rm: ', x);
-};
 function process(bucket, log, x) {
   const rmFromBucket = rmCloudDir(bucket)(log);
   dirLine$(x).subscribe(
     (x) => rmFromBucket(x),
     (x) => log.error(`\n### err: \n\t${x}`),
-    (x) => log.verbose(`\n### complete: \n\t${x}`)
+    () => log.info(`\n### Finished truncating data in bucket: \n\t${bucket}`)
   );
 }
+
 function guard(flagList, flags) {
   flagList.forEach((x) => {
     if (flags[x] === '') throw createFlagError(`please provide a single --${x} flag`);
