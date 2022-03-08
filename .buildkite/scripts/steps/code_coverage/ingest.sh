@@ -10,31 +10,8 @@ uploadPrefix="gs://elastic-bekitzur-kibana-coverage-live/"
 
 #Note:  `-m` === run in parallel
 
-# List out the data
-#gsutil -m ls -r ${uploadPrefix} # recursive
-
-# Trying w/o -r, supposed to be more efficient...a "flat" listing
-gsutil -m ls "${uploadPrefix}**"
-
 # Truncate Old Data in GCS
-# Not ready yet :)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+. .buildkite/scripts/steps/code_coverage/data_retention/truncate_data.sh
 
 
 
