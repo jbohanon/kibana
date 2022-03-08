@@ -4,6 +4,6 @@ filename=".buildkite/scripts/steps/code_coverage/data_retention/2020_dirs_file.t
 while read line
 do
   echo "### Truncating $line"
-  gsutil -m rm -r gs://elastic-bekitzur-kibana-coverage-live/$line
+  gsutil -m rm -r gs://elastic-bekitzur-kibana-coverage-live/$line &
 #  gsutil ls gs://elastic-bekitzur-kibana-coverage-live/$line
 done < $filename
